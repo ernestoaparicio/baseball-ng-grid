@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ng-app="baseballApp">
+<head>
+    <title>Ng-demo using baseball json</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ng-grid/2.0.11/ng-grid.min.css"/>
+    <style>
+        .gridStyle {
+            border: 1px solid rgb(212,212,212);
+            width: 100%;
+            height: 600px
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ng-grid/2.0.11/ng-grid.min.js"></script>
+    <script>
+        angular.module("baseballApp",['ngGrid'])
+                .controller("defaultCtrl", function($scope, $http){
+                    $http.get("baseball.json").success(function (data) {
+                        $scope.gridData = data.query.results.player;
+                    });
+
+                    $scope.gridOptions = { data: 'gridData',
+                        showColumnMenu : true,
+                        enableRowSelection: false,
+                        enableColumnReordering: true,
+                        showFilter: true,
+                        enableColumnResize: true,
+                        columnDefs: [{ field: 'name.full', displayName: 'Full Name', width: "*", visible: true},
+                            { field: 'editorial_team_full_name', displayName: 'Team', width: "*", visible: true},
+                            { field: 'display_position', displayName: 'Position', width: "*", visible: true},
+                            { field: 'uniform_number', displayName: 'Uniform Number', width: "*", visible: true}
+                        ]
+                    };
+
+                });
+    </script>
+</head>
+<body ng-controller="defaultCtrl">
+<div class="gridStyle" ng-grid="gridOptions"></div>
+</body>
+</html>
